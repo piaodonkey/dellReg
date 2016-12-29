@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/image">
+        <file alias="logo">winlogo.png</file>
+        <file alias="create">ios8_Create_New_128px_1173453_easyicon.net.png</file>
+        <file alias="left">long_arrow_left_934px_1190638_easyicon.net.png</file>
+        <file alias="right">long_arrow_right_934px_1190639_easyicon.net.png</file>
+        <file alias="back">back.png</file>
+        <file alias="search">Search_396px_1183496_easyicon.net.png</file>
+        <file alias="commit">提交.png</file>
+    </qresource>
+</RCC>
