@@ -2,8 +2,7 @@
 
 InitSQL::InitSQL(QObject *parent) : QObject(parent)
 {
-
-    
+    //qDebug()<<"Test";
 }
 
 QSqlError InitSQL::initSQL()
