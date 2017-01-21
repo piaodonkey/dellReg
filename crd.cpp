@@ -16,7 +16,7 @@ Crd::Crd(QWidget *parent , Qt::WindowFlags f ):QDialog(parent)
 {
 
     this->setWindowTitle(QString("工作记录表").append(QDate::currentDate().toString(" yyyy年MMMMdd日 dddd")));
-    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
+    this->setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     initWidgets();
     initCompleter();
     connect(sumbit,&QPushButton::clicked,this,&Crd::commit);
@@ -74,7 +74,7 @@ void Crd::commit()
         if(!s.isEmpty()&&s!=" ")
         {
             QStringList rec;
-            rec<<product->text()<<s.toUpper()<<company->text()<<saler->text()<<content->toPlainText();
+            rec<<product->text().toUpper()<<s.toUpper()<<company->text()<<saler->text()<<content->toPlainText();
             record1<<rec;
         }
     }
@@ -98,6 +98,8 @@ void Crd::initCompleter()
 
     model=new QStringListModel(word_list,this);
     completer=new QCompleter(word_list,this);
+    completer->setCompletionMode(QCompleter::InlineCompletion);
+
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setModel(model);
     //    QLineEdit *seriaNumber, *product,*saler,*company;

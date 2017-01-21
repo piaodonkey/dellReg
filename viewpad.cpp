@@ -11,7 +11,7 @@ ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
     date=QDate::currentDate();
     this->setWindowTitle(QString("工作记录表").append(QDate::currentDate().toString(" yyyy年MMMMdd日 dddd")));
     this->setWindowIcon(QIcon(":/image/logo"));
-    initModel(db->sqlConn(),"dellReg");
+    initModel(db->sqlConn(),tableName);
     initView(model);
 
     initWidgets();
@@ -20,6 +20,7 @@ ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
     {
         date=date.addMonths(-1);
         model->setFilter(QString("date like '%%1%'").arg(date.toString("yyyy-MM")));
+        model->setSort(6,Qt::DescendingOrder);
         model->select();
 
     });
@@ -27,13 +28,17 @@ ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
     {
         date=date.addMonths(1);
         model->setFilter(QString("date like '%%1%'").arg(date.toString("yyyy-MM")));
+        model->setSort(6,Qt::DescendingOrder);
         model->select();
+
 
     });
     connect(btnThis,&QPushButton::clicked,this,[=]()
     {
+        //qDebug()<<model->tableName();
         date=date.currentDate();
         model->setFilter(QString("date like '%%1%'").arg(date.toString("yyyy-MM")));
+        model->setSort(6,Qt::DescendingOrder);
         model->select();
 
     });
@@ -53,6 +58,7 @@ ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
             QString sqlFiled=QString("%1 or %2 or %3 or %3 or %4 or %5").arg(product,sn,sales,content,company);
 
             model->setFilter(sqlFiled);
+            model->setSort(6,Qt::DescendingOrder);
             model->select();
         }
 
@@ -88,6 +94,7 @@ void ViewPad::initWidgets()
     btnSrh=new QPushButton(QIcon(":/image/search"),tr("查询"),this);
     lineSrhText=new QLineEdit(this);
     lineSrhText->setPlaceholderText(tr("输入查询内容..."));
+    lineSrhText->setFocus();
     installCount=new QLabel(this);
     //installCount->setText(QString("test"));
     installCount->setStyleSheet("color:red");
@@ -134,12 +141,17 @@ void ViewPad::initView(QSqlTableModel *model)
     //设置当公司名字或详细信息过多的时候tooltip
     connect(viewTable,&QTableView::entered,this,[&](const QModelIndex &index)
     {
-        if(index.isValid()&&(index.column()==5||index.column()==4))
+        if(index.isValid()&&(index.column()==5||index.column()==4||index.column()==2||index.column()==1))
         {
+
             QToolTip::showText(QCursor::pos(),index.data().toString());
         }
         QCursor::pos();
     });
+    date=date.currentDate();
+    model->setFilter(QString("date like '%%1%'").arg(date.toString("yyyy-MM")));
+    model->setSort(6,Qt::DescendingOrder);
+    model->select();
 
     // viewTable->selectionModel();
 
@@ -156,7 +168,7 @@ void ViewPad::initModel(QSqlDatabase db, const QString &tableName)
     model->setHeaderData(model->fieldIndex("COMPANY"),Qt::Horizontal,tr("公司名称"),Qt::DisplayRole);
     model->setHeaderData(model->fieldIndex("CONTENT"),Qt::Horizontal,tr("详细信息"),Qt::DisplayRole);
     model->setFilter(QString("date like '%%1%'").arg(date.toString("yyyy-MM")));
-    model->setSort(6,Qt::DescendingOrder);
+    //model->setSort(6,Qt::DescendingOrder);
     model->select();
 
 }
@@ -173,8 +185,8 @@ void ViewPad::addData(const QList<QStringList> &record)
         model->setData(model->index(row,0), QDate::currentDate().toString("yyyy-MM-dd"));
         model->setData(model->index(row,1),var.at(0));
         model->setData(model->index(row,2),var.at(1));
-        model->setData(model->index(row,3),var.at(2));
-        model->setData(model->index(row,4),var.at(3));
+        model->setData(model->index(row,3),var.at(3));
+        model->setData(model->index(row,4),var.at(2));
         model->setData(model->index(row,5),var.at(4));
     }
     if(model->submitAll())
@@ -289,8 +301,8 @@ void ViewPad::delData()
     //int curRow = viewTable->currentIndex().row();
     QItemSelectionModel *selections = viewTable->selectionModel(); //返回当前的选择模式
     QModelIndexList selecteds = selections->selectedIndexes(); //返回所有选定的模型项目索引列表
-    int ok = QMessageBox::warning(this,tr("删除当前选中行!"),tr("你确定"
-                                                         "删除当前行吗？"),
+    int ok = QMessageBox::warning(this,tr("删除当前所有选中行!"),tr("你确定"
+                                                           "删除选中行吗？"),
                                   QMessageBox::Yes,QMessageBox::No);
     if(ok==QMessageBox::Yes)
     {
@@ -298,21 +310,21 @@ void ViewPad::delData()
         QString text=QInputDialog::getText(this,tr("删除"),tr("输入删除密码"),QLineEdit::Password,"",&ok1,Qt::Dialog|Qt::WindowCloseButtonHint);
 
         if(ok1)
-           {
+        {
 
-               if(text!="dell123!!")
-                   return;
-               model->database().transaction();
-               foreach (QModelIndex index, selecteds)
-               {
-                   int curRow = index.row(); //鍒犻櫎鎵€鏈夎閫変腑鐨勮
-                   model->removeRow(curRow);
-               }
-               model->submitAll();
-               model->database().commit();
+            if(text!="dell123!!")
+                return;
+            model->database().transaction();
+            foreach (QModelIndex index, selecteds)
+            {
+                int curRow = index.row(); //
+                model->removeRow(curRow);
+            }
+            model->submitAll();
+            model->database().commit();
 
 
-           }
+        }
 
     }
     else
@@ -350,22 +362,22 @@ void ViewPad::modifyData()
 bool ViewPad::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == lineSrhText) {
-             if (event->type() == QEvent::KeyPress) {
-                 QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-                  //qDebug()<<keyEvent->key();
-                 if(keyEvent->key()==Qt::Key_Return)
-                 {
-                    emit btnSrh->clicked(true);
-                      qDebug()<<keyEvent->key();
-                    return true;
-                 }
-                     return false;
-             } else {
-                 return false;
-             }
-         } else {
-             // pass the event on to the parent class
-             return QWidget::eventFilter(watched, event);
-         }
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+            //qDebug()<<keyEvent->key();
+            if(keyEvent->key()==Qt::Key_Return)
+            {
+                emit btnSrh->clicked(true);
+                qDebug()<<keyEvent->key();
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    } else {
+        // pass the event on to the parent class
+        return QWidget::eventFilter(watched, event);
+    }
 
 }

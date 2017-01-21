@@ -11,6 +11,7 @@ QSqlError InitSQL::initSQL()
     db.setHostName("192.168.1.225");
     db.setUserName("root");
     db.setPassword("root");
+    //db.setPort(33489);
     db.setDatabaseName("data");
     if(!db.open())
     {

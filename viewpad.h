@@ -44,6 +44,7 @@ private:
     QDate date;
     QMenu *rightPopupMenu;
 
+    const QString tableName="dellReg";
    // createDlg *dlg;
 
 private slots:

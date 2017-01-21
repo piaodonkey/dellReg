@@ -9,6 +9,7 @@ int main(int argc,char **argv)
     ViewPad pad;
     Crd crd;
     //crd.show();
-     pad.show();
+     pad.showMaximized();
+    // pad.show();
     return app.exec();
 }
