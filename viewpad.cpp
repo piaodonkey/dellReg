@@ -2,7 +2,8 @@
 #include "viewpad.h"
 #include "initsql.h"
 #include <QLabel>
-
+#include <QWebEngineView>
+#include <QWebChannel>
 ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
 {
 
@@ -214,13 +215,18 @@ void ViewPad::showRightMenu(const QPoint &)
     QAction *qCopy=new QAction(tr("&复制"),this);
     QAction *qModify=new QAction(tr("&修改"),this);
     QAction *qDel=new QAction(tr("&删除"),this);
+    QAction *qWarranty=new QAction(tr("&保修配置驱动查询下载"),this);
 
     connect(qCopy,&QAction::triggered,this,&ViewPad::copyData);
+
+    connect(qWarranty,&QAction::triggered,this,&ViewPad::qWarranty);
     connect(qModify,&QAction::triggered,this,&ViewPad::modifyData);
     connect(qDel,&QAction::triggered,this,&ViewPad::delData);
     rightPopupMenu->addAction(qCopy);
     rightPopupMenu->addAction(qModify);
     rightPopupMenu->addAction(qDel);
+
+    rightPopupMenu->addAction(qWarranty);
     rightPopupMenu->exec(QCursor::pos());
 }
 
@@ -343,6 +349,15 @@ void ViewPad::delData()
 
 //}
 
+
+void ViewPad::qWarranty()
+{
+    QString data=viewTable->currentIndex().data().toString();
+    QWebEngineView *view=new QWebEngineView;
+    view->setUrl(QUrl(QString("http://www.dell.com/support/home/cn/zh/cnbsd1/product-support/servicetag/%1/configuration").arg(data)));
+    view->resize(1024, 768);
+    view->show();
+}
 void ViewPad::modifyData()
 {
 

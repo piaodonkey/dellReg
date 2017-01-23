@@ -41,6 +41,7 @@ private:
     void initLayout();
     void copyData();//copyData;
     void delData();
+    void qWarranty();
     QDate date;
     QMenu *rightPopupMenu;
 

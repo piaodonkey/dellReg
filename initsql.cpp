@@ -8,10 +8,10 @@ InitSQL::InitSQL(QObject *parent) : QObject(parent)
 QSqlError InitSQL::initSQL()
 {
     db=QSqlDatabase::addDatabase("QMYSQL","postgres with dell");
-    db.setHostName("192.168.1.225");
+    db.setHostName("58.211.90.242");
     db.setUserName("root");
     db.setPassword("root");
-    //db.setPort(33489);
+    db.setPort(33489);
     db.setDatabaseName("data");
     if(!db.open())
     {

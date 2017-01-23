@@ -1,4 +1,4 @@
-QT +=widgets sql
+QT +=widgets sql  webenginewidgets
 RC_FILE = myico.rc
 SOURCES += \
     main.cpp \
