@@ -1,3 +1,4 @@
+﻿#pragma execution_character_set("utf-8")
 #include "crd.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>

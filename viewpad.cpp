@@ -1,3 +1,4 @@
+﻿#pragma execution_character_set("utf-8")
 #include "viewpad.h"
 #include "initsql.h"
 #include <QLabel>

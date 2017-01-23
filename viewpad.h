@@ -1,4 +1,4 @@
-#ifndef VIEWPAD_H
+﻿#ifndef VIEWPAD_H
 #define VIEWPAD_H
 
 #include <QWidget>

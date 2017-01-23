@@ -1,4 +1,4 @@
-#ifndef CRD_H
+﻿#ifndef CRD_H
 #define CRD_H
 
 #include <QObject>

@@ -1,4 +1,4 @@
-#ifndef INITSQL_H
+﻿#ifndef INITSQL_H
 #define INITSQL_H
 
 #include <QObject>
