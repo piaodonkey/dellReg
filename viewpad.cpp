@@ -3,7 +3,7 @@
 #include "initsql.h"
 #include <QLabel>
 #include <QWebEngineView>
-#include <QWebChannel>
+
 ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
 {
 
@@ -215,7 +215,7 @@ void ViewPad::showRightMenu(const QPoint &)
     QAction *qCopy=new QAction(tr("&复制"),this);
     QAction *qModify=new QAction(tr("&修改"),this);
     QAction *qDel=new QAction(tr("&删除"),this);
-    QAction *qWarranty=new QAction(tr("&保修配置驱动查询下载"),this);
+    QAction *qWarranty=new QAction(tr("&保修配置查询"),this);
 
     connect(qCopy,&QAction::triggered,this,&ViewPad::copyData);
 
@@ -352,11 +352,13 @@ void ViewPad::delData()
 
 void ViewPad::qWarranty()
 {
-    QString data=viewTable->currentIndex().data().toString();
-    QWebEngineView *view=new QWebEngineView;
+    //QString lenovo=QString("http://support.lenovo.com.cn/lenovo/wsi/usercenter/computersearch/machinesearch.aspx?intcmp=index&id=%1&showradio=1&showdriver=no");
+    QString data=viewTable->currentIndex().data().toString().trimmed();
+    QWebEngineView *view=new QWebEngineView(this);
+    view->setAttribute(Qt::WA_DeleteOnClose);
     view->setUrl(QUrl(QString("http://www.dell.com/support/home/cn/zh/cnbsd1/product-support/servicetag/%1/configuration").arg(data)));
-    view->resize(1024, 768);
-    view->show();
+    view->setWindowTitle(tr("配置&保修查询...(仅支持Dell)"));
+    view->showMaximized();
 }
 void ViewPad::modifyData()
 {

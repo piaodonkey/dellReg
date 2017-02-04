@@ -2,13 +2,13 @@
 #include <QApplication>
 #include "viewpad.h"
 #include "crd.h"
-
 int main(int argc,char **argv)
 {
+    //QApplication::addLibraryPath(“./plugins”);
     QApplication app(argc,argv);
 
     ViewPad pad;
-    Crd crd;
+    //Crd crd;
     //crd.show();
      pad.showMaximized();
     // pad.show();

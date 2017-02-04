@@ -1,4 +1,4 @@
-﻿#pragma execution_character_set("utf-8")
+﻿
 #include "crd.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -6,7 +6,6 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QRegExp>
-#include <QDebug>
 #include <QDate>
 #include <QCompleter>
 #include <QStringListModel>
@@ -90,7 +89,7 @@ void Crd::initCompleter()
     QFile file("Json.dat");
     if(!file.open(QIODevice::ReadWrite))
     {
-        qDebug()<<"error";
+       
         return;
 
     }
@@ -161,7 +160,7 @@ bool Crd::eventFilter(QObject *watched, QEvent *event)
                  // qDebug()<<keyEvent->key();
                  if(keyEvent->key()==Qt::Key_Return)
                  {
-                     qDebug()<<"key_press";
+                    
                      seriaNumber->setText(seriaNumber->text().append(" "));
                     return true;
                  }
