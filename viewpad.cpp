@@ -349,8 +349,8 @@ void ViewPad::qWarranty()
     QString data=viewTable->currentIndex().data().toString().trimmed();
     QWebEngineView *view=new QWebEngineView;
     view->setAttribute(Qt::WA_DeleteOnClose);
-   // view->setUrl(QUrl(QString("http://www.dell.com/support/home/cn/zh/cnbsd1/product-support/servicetag/%1/configuration").arg(data)));
-    view->setUrl(QUrl(QString("http://www.bing.com")));
+    view->setUrl(QUrl(QString("http://www.dell.com/support/home/cn/zh/cnbsd1/product-support/servicetag/%1/configuration").arg(data)));
+    //view->setUrl(QUrl(QString("http://www.bing.com")));
     view->setWindowTitle(tr("配置&保修查询...(仅支持Dell)"));
     view->showMaximized();
 }
