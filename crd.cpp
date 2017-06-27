@@ -32,6 +32,7 @@ void Crd::initWidgets()
     saler=new QLineEdit(this);
     company=new QLineEdit(this);
     content=new QTextEdit(this);
+
     QHBoxLayout *psLay=new QHBoxLayout;
     psLay->addWidget(new QLabel("产品型号:"));
     psLay->addWidget(product);
@@ -63,8 +64,8 @@ void Crd::initWidgets()
 
 void Crd::commit()
 {
+
     if(product->text().isEmpty()||seriaNumber->text().isEmpty()||saler->text().isEmpty()||company->text().isEmpty())
-   // if(product->currentText().isEmpty()||seriaNumber->text().isEmpty()||saler->currentText().isEmpty()||company->currentText().isEmpty())
         return;
     QMultiHash<QString,QStringList> data;
 
@@ -89,19 +90,19 @@ void Crd::initCompleter()
     QFile file("Json.dat");
     if(!file.open(QIODevice::ReadWrite))
     {
-       
+
         return;
 
     }
     QJsonDocument jsonDocument=QJsonDocument::fromBinaryData(file.readAll());
     word_list=jsonDocument.toVariant().toStringList();
 
-    model=new QStringListModel(word_list,this);
+   // model=new QStringListModel(word_list,this);
     completer=new QCompleter(word_list,this);
-    completer->setCompletionMode(QCompleter::InlineCompletion);
+    completer->setCompletionMode(QCompleter::PopupCompletion);
 
     completer->setCaseSensitivity(Qt::CaseInsensitive);
-    completer->setModel(model);
+    //completer->setModel(model);
     //    QLineEdit *seriaNumber, *product,*saler,*company;
 
     // seriaNumber->setCompleter(completer);
@@ -155,22 +156,22 @@ void Crd::editCompleter(const QString &s)
 bool Crd::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == seriaNumber) {
-             if (event->type() == QEvent::KeyPress) {
-                 QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-                 // qDebug()<<keyEvent->key();
-                 if(keyEvent->key()==Qt::Key_Return)
-                 {
-                    
-                     seriaNumber->setText(seriaNumber->text().append(" "));
-                    return true;
-                 }
-                     return false;
-             } else {
-                 return false;
-             }
-         } else {
-             // pass the event on to the parent class
-             return QDialog::eventFilter(watched, event);
-         }
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+            // qDebug()<<keyEvent->key();
+            if(keyEvent->key()==Qt::Key_Return)
+            {
+
+                seriaNumber->setText(seriaNumber->text().append(" "));
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    } else {
+        // pass the event on to the parent class
+        return QDialog::eventFilter(watched, event);
+    }
 
 }

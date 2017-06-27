@@ -21,7 +21,8 @@ signals:
 private:
     QPushButton *sumbit;
     QTextEdit *content;
-    QLineEdit *seriaNumber, *product,*saler,*company;
+    QLineEdit *seriaNumber;
+    QLineEdit  *product,*saler,*company;
     //QComboBox *product,*saler,*company;
     //QLineEdit *seriaNumber;
     QStringList sumbitList;

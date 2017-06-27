@@ -7,7 +7,7 @@
 ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
 {
 
-    //crd=new Crd(this);
+
     db=new InitSQL(this);
     rightPopupMenu=nullptr;
     date=QDate::currentDate();
@@ -124,6 +124,8 @@ void ViewPad::initLayout()
 
 void ViewPad::initView(QSqlTableModel *model)
 {
+    QString time=QTime::currentTime().toString();
+    qDebug()<<time;
     viewTable=new QTableView(this);
     viewTable->setStyleSheet("color:blue");
     //viewTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -143,7 +145,7 @@ void ViewPad::initView(QSqlTableModel *model)
     //设置当公司名字或详细信息过多的时候tooltip
     connect(viewTable,&QTableView::entered,this,[&](const QModelIndex &index)
     {
-        if(index.isValid()&&(index.column()==5||index.column()==4||index.column()==2||index.column()==1))
+        if(index.isValid()&&(index.column()==0||index.column()==5||index.column()==4||index.column()==2||index.column()==1))
         {
 
             QToolTip::showText(QCursor::pos(),index.data().toString());
@@ -177,14 +179,20 @@ void ViewPad::initModel(QSqlDatabase db, const QString &tableName)
 void ViewPad::addData(const QList<QStringList> &record)
 {
 
+
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     int row=0;
     model->database().transaction();
     // rec<<product->text()<<s<<company->text()<<saler->text()<<content->toPlainText();
+    QString time=QTime::currentTime().toString();
+    QString date=QDate::currentDate().toString("yyyy-MM-dd").append(" ").append(time);
+    qDebug()<<time;
 
     foreach (QStringList var, record) {
         model->insertRows(row,1);
-        model->setData(model->index(row,0), QDate::currentDate().toString("yyyy-MM-dd"));
+
+        //model->setData(model->index(row,0), QDate::currentDate().toString("yyyy-MM-dd"));
+        model->setData(model->index(row,0), date);
         model->setData(model->index(row,1),var.at(0));
         model->setData(model->index(row,2),var.at(1));
         model->setData(model->index(row,3),var.at(3));

@@ -40,7 +40,7 @@ QSqlError InitSQL::initSQL()
         }
        // db.close();
     }
-    //db.close();
+   // db.close();
     return QSqlError();
 
 }
