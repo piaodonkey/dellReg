@@ -97,12 +97,12 @@ void Crd::initCompleter()
     QJsonDocument jsonDocument=QJsonDocument::fromBinaryData(file.readAll());
     word_list=jsonDocument.toVariant().toStringList();
 
-   // model=new QStringListModel(word_list,this);
+     model=new QStringListModel(word_list,this);
     completer=new QCompleter(word_list,this);
     completer->setCompletionMode(QCompleter::PopupCompletion);
 
     completer->setCaseSensitivity(Qt::CaseInsensitive);
-    //completer->setModel(model);
+    completer->setModel(model);
     //    QLineEdit *seriaNumber, *product,*saler,*company;
 
     // seriaNumber->setCompleter(completer);
