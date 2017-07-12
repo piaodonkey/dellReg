@@ -6,8 +6,6 @@
 
 ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
 {
-
-
     db=new InitSQL(this);
     rightPopupMenu=nullptr;
     date=QDate::currentDate();
@@ -65,7 +63,7 @@ ViewPad::ViewPad(QWidget *parent) : QWidget(parent)
         }
 
     });
-
+//nothing need to do
     connect(btnCreate,&QPushButton::clicked,this,[=]()
     {
 
